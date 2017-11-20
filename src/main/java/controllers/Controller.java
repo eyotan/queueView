@@ -19,6 +19,9 @@ import java.util.ResourceBundle;
 public class Controller extends Stage implements Initializable {
     public static Status status;
     static int hour;
+    static boolean currentTime;
+    static int hourStart;
+    static int hourEnd;
     @FXML
     private Label labelStatus;
 
@@ -51,6 +54,9 @@ public class Controller extends Stage implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        hourStart = properties.Props.hourStart;
+        hourEnd = properties.Props.hourEnd;
+        currentTime = true;
     }
 
     public void start(Stage primaryStage) {
@@ -65,18 +71,7 @@ public class Controller extends Stage implements Initializable {
             StatusService service = new StatusService();
             service.valueProperty().addListener((ObservableValue<? extends Status> obs, Status oldValue, Status newValue) -> {
 
-                if (hour < 7 || hour > 22) {
-                    labelStatus.setTextFill(Color.BLACK);
-                    labelClients.setTextFill(Color.BLACK);
-                    labelOperators.setTextFill(Color.BLACK);
-                    labelDrivers.setTextFill(Color.BLACK);
-                    labelOperatorsVE.setTextFill(Color.BLACK);
-                    clientNum.setTextFill(Color.BLACK);
-                    operClientNum.setTextFill(Color.BLACK);
-                    driverNum.setTextFill(Color.BLACK);
-                    operDriverNum.setTextFill(Color.BLACK);
-                } else {
-
+                if (currentTime) {
                     labelStatus.setTextFill(Color.RED);
                     labelClients.setTextFill(Color.RED);
                     labelOperators.setTextFill(Color.WHITE);
@@ -90,14 +85,20 @@ public class Controller extends Stage implements Initializable {
                     operClientNum.setText(newValue.getNkoperators());
                     driverNum.setText(newValue.getDriverclients());
                     operDriverNum.setText(newValue.getDriveroperators());
+                } else {
+                    labelStatus.setTextFill(Color.BLACK);
+                    labelClients.setTextFill(Color.BLACK);
+                    labelOperators.setTextFill(Color.BLACK);
+                    labelDrivers.setTextFill(Color.BLACK);
+                    labelOperatorsVE.setTextFill(Color.BLACK);
+                    clientNum.setTextFill(Color.BLACK);
+                    operClientNum.setTextFill(Color.BLACK);
+                    driverNum.setTextFill(Color.BLACK);
+                    operDriverNum.setTextFill(Color.BLACK);
                 }
             });
-
-
             primaryStage.show();
             service.start();
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -109,7 +110,6 @@ public class Controller extends Stage implements Initializable {
             return new Task<Status>() {
                 @Override
                 protected Status call() throws Exception {
-
                     while (!isCancelled()) {
                         try {
                             Thread.sleep(2000);
@@ -120,7 +120,14 @@ public class Controller extends Stage implements Initializable {
                             }
                         }
                         hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-                        updateValue(http.Http.httpGetQueue(status));
+                        if (hour > hourStart && hour < hourEnd) {
+                            currentTime = true;
+                        } else {
+                            currentTime = false;
+                        }
+                        if (currentTime) {
+                            updateValue(http.Http.httpGetQueue(status));
+                        }
                     }
                     return null;
                 }
@@ -146,17 +153,14 @@ public class Controller extends Stage implements Initializable {
         }
 
         public String getNkoperators() {
-
             return nkoperators;
         }
 
         public String getDriverclients() {
-
             return driverclients;
         }
 
         public String getDriveroperators() {
-
             return driveroperators;
         }
 

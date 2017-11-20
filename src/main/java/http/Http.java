@@ -15,7 +15,7 @@ import static controllers.Controller.Status;
 
 public class Http {
     private static final Logger logger = Logger.getLogger(Http.class.getName());
-    public static String url;
+    private static String url = properties.Props.url;
 
     public static Status httpGetQueue(Status status) throws NullPointerException {
         HttpURLConnection connection = null;

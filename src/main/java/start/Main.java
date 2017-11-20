@@ -15,11 +15,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        try {
-            http.Http.url = args[0];
-        }catch (IndexOutOfBoundsException ex){
-            Logger.getLogger(Main.class.getName()).warning("NO URL IN FIRST ARGUMENT "+ex);
-        }
+        new properties.Props();
         launch(args);
     }
 }

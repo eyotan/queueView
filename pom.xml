@@ -12,6 +12,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <dir>${project.build.directory}</dir>
     </properties>
 
     <dependencies>
@@ -46,7 +47,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>
-                                ${project.build.directory}/libs
+                                ${dir}/libs
                             </outputDirectory>
                         </configuration>
                     </execution>
@@ -64,6 +65,7 @@
                             <mainClass>start.Main</mainClass>
                         </manifest>
                     </archive>
+                    <outputDirectory>${dir}</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
