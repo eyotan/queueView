@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Calendar;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 
 public class Controller extends Stage implements Initializable {
@@ -119,7 +119,7 @@ public class Controller extends Stage implements Initializable {
                                 break;
                             }
                         }
-                        hour = (byte) Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+                        hour = (byte) LocalTime.now().getHour();
                         if (hour > hourStart && hour < hourEnd) {
                             currentTime = true;
                             updateValue(http.Http.httpGetQueue(status));
