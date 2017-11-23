@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 
 public class Props {
     public static String url;
-    public static int hourStart;
-    public static int hourEnd;
+    public static byte hourStart;
+    public static byte hourEnd;
 
     public Props(){
         try{
@@ -19,8 +19,8 @@ public class Props {
                 Properties prop = new Properties();
                 prop.load(new FileReader(configFile));
                 url = prop.getProperty("url");
-                hourStart = Integer.parseInt(prop.getProperty("hourStart"));
-                hourEnd = Integer.parseInt(prop.getProperty("hourEnd"));
+                hourStart = Byte.parseByte(prop.getProperty("hourStart"));
+                hourEnd = Byte.parseByte(prop.getProperty("hourEnd"));
             }else{
                 Properties props = new Properties();
                 props.setProperty("url", "SET url from Queue");

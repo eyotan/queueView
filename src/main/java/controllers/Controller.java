@@ -18,10 +18,10 @@ import java.util.ResourceBundle;
 
 public class Controller extends Stage implements Initializable {
     public static Status status;
-    static int hour;
+    static byte hour;
     static boolean currentTime;
-    static int hourStart;
-    static int hourEnd;
+    static byte hourStart;
+    static byte hourEnd;
     @FXML
     private Label labelStatus;
 
@@ -119,14 +119,13 @@ public class Controller extends Stage implements Initializable {
                                 break;
                             }
                         }
-                        hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+                        hour = (byte) Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
                         if (hour > hourStart && hour < hourEnd) {
                             currentTime = true;
+                            updateValue(http.Http.httpGetQueue(status));
                         } else {
                             currentTime = false;
-                        }
-                        if (currentTime) {
-                            updateValue(http.Http.httpGetQueue(status));
+                            updateValue(status = new Status("","","",""));
                         }
                     }
                     return null;
